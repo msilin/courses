@@ -1,0 +1,60 @@
+#!/bin/bash
+
+
+
+#read -p "Enter Assignment: " assignment
+mkdir -p $PWD/$1/tests
+
+
+cp ~kmammen-grader/evaluations/S18/357/$1/Makefile $PWD/$1/Makefile
+
+
+
+cp ~kmammen-grader/evaluations/S18/357/$1/requirements $PWD/$1/tests/requirements
+
+
+
+
+
+
+if [ -d ~kmammen-grader/evaluations/S18/357/$1/tests/core ]; then
+mkdir -p $PWD/$1/tests/core
+num=0
+for testNUM in ~kmammen-grader/evaluations/S18/357/$1/tests/core/*/; do
+
+  let num+=1
+  input=$(basename $testNUM)
+  cp $testNUM/description $PWD/$1/tests/core/$input.txt
+  echo /*------------------------------------------------------------ >> $PWD/$1/tests/core/core.txt
+  printf "Test $num \n\n" >> $PWD/$1/tests/core/core.txt
+  cat $PWD/$1/tests/core/$input.txt >> $PWD/$1/tests/core/core.txt
+  printf " ------------------------------------------------------------*/\n\n" >> $PWD/$1/tests/core/core.txt
+done
+fi
+
+if [ -d ~kmammen-grader/evaluations/S18/357/$1/tests/feature ]; then
+mkdir -p $PWD/$1/tests/feature
+for testNUM in ~kmammen-grader/evaluations/S18/357/$1/tests/feature/*/; do
+     
+   input=$(basename $testNUM)
+   cp $testNUM/description $PWD/$1/tests/feature/$input.txt
+done
+fi
+
+if [ -d ~kmammen-grader/evaluations/S18/357/$1/cpu/ ]; then
+mkdir -p $PWD/$1/tests/cpu
+for testNUM in ~kmammen-grader/evaluations/S18/357/$1/cpu/*/; do
+     
+   input=$(basename $testNUM)
+   cp $testNUM/description $PWD/$1/tests/cpu/$input.txt
+done
+fi
+
+if [ -d ~kmammen-grader/evaluations/S18/357/$1/heap ]; then
+mkdir -p $PWD/$1/tests/heap
+for testNUM in ~kmammen-grader/evaluations/S18/357/$1/heap/*/; do
+     
+   input=$(basename $testNUM)
+   cp $testNUM/description $PWD/$1/tests/heap/$input.txt
+done
+fi

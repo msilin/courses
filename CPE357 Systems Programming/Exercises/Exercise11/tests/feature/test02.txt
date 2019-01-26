@@ -1,0 +1,2 @@
+Tests the TEST_CHAR macro with a representative sampling of actual-expect
+pairs. Also that failed test output goes to stderr.

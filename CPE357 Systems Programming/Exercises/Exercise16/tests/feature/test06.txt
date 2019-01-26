@@ -1,0 +1,2 @@
+Test with some binary file that contains "words" that have one or more
+printable characters and "words" that do not have any printable characters.

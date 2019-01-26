@@ -1,0 +1,2 @@
+Tests with multiple files, some with read permission, some without read
+permission, and some that do not exist.

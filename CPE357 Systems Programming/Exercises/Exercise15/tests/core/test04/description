@@ -1,0 +1,3 @@
+Verifies the first of at least one (1) additional special tests and
+that it failures (does not assert) when compiled and run with the provided
+incorrectHashTable.c.

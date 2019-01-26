@@ -1,0 +1,2 @@
+With memory: Adds elements to the list using addHead only. Prints out
+the empty list and the list after each addition. 

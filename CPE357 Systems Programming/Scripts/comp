@@ -1,0 +1,62 @@
+for testInput in *.c; do   
+	temp="$temp $testInput"	
+done
+
+if [ "$1" == "-s" ];
+then 
+~kmammen-grader/bin/styleCheckC $temp
+elif [ "$1" == "-c" ];
+then 
+complexity -s1 -t0 $temp
+fi
+if [ "$2" == "-s" ];
+then 
+~kmammen-grader/bin/styleCheckC $temp
+elif [ "$2" == "-c" ];
+then 
+complexity -s1 -t0 $temp
+fi
+
+lines=-3
+printf "Evaluating complexity : $temp \n"
+   #complexity -t0 -s1 $temp
+
+
+complexity -t0 -s1 $temp > compl
+
+temp=0
+temp2=0
+cat compl | (while read line
+  do
+    set -- $line
+	 #echo $1
+    
+   if [ $((0 + $1)) -gt 40 ];
+     then
+      printf "Warning:  $5.c : $1\n"
+      fi
+	 temp=$(($temp + $1))
+	 let "lines += 1";
+
+  done
+
+tail -n $((($lines / 4 ) + 1)) compl | (while read line
+  do
+   set -- $line
+   temp2=$(($temp2 + $1))
+   #echo $temp2
+  done
+
+
+
+printf "Total Complexity : $temp\n" 
+printf "Average Complexity : "
+echo "scale=1 ; ($temp / $lines)" | bc 
+printf "Top Quartile Ratio: "
+echo "scale=2 ; ($temp2 + .5) / $temp" | bc
+rm compl
+)
+)
+
+
+

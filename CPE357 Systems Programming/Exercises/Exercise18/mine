@@ -1,0 +1,53 @@
+
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Pipe successfully created, read-fd is 3, write-fd is 4
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Enter the fd of the write-end to write to: Enter the integer value you wish to write: The value 4 was written successfully to fd -1946044496
+
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Enter the fd of the read-end to read from: The value -1946044496 was read successfully from fd 3
+
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Enter the fd of the pipe-end you wish to close: File descriptor 3 successfully closed
+
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Enter the fd of the pipe-end you wish to close: File descriptor 4 successfully closed
+
+Command Menu:
+   n - Create a new pipe
+   w - Write to a pipe end
+   r - Read from a pipe end
+   c - Close a pipe end
+   q - Quit
+
+Enter a command: Bye Bye - see you next time!

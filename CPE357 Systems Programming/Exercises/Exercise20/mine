@@ -1,0 +1,10 @@
+Message from child: I'm alive! Reading from 3, writing to 6
+Enter a message for the child: Acknowledgement from Child: Message 1: a
+
+Enter a message for the child: Acknowledgement from Child: Message 2: a
+
+Enter a message for the child: Parent closing the write-end of pipe to child
+Acknowledgement from Child: Okay, I guess you don't want to talk anymore, goodbye!
+
+Parent waiting for child to terminate...
+Child has terminated, parent ending...

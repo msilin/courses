@@ -1,0 +1,2 @@
+Test with no memory (see the reference solution's usage message for how to
+run the provided main with no memory).

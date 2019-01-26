@@ -1,0 +1,1 @@
+Test the program compiled with -D NDEBUG with a positive radius.

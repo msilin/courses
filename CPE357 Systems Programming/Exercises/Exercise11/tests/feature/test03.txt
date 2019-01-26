@@ -1,0 +1,3 @@
+Tests the TEST_UNSIGNED macro with a representative sampling of 
+actual-expect pairs. Also makes sure it supports unsigned long
+values and that failed test output go to stderr.

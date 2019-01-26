@@ -1,0 +1,1 @@
+Read from a non-empty pipe with a closed write-end.

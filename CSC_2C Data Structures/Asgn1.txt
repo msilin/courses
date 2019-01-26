@@ -1,0 +1,339 @@
+CSC 2C Assigmnent 1
+// Michael Silin
+// Foothill College
+
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+
+
+
+class Sublist
+{
+public:
+   Sublist(vector<int> *orig)
+      : sum(0), originalObjects(orig)
+   {
+      for (unsigned int i = 0; i < indices.size(); i++)
+         sum += originalObjects->at(i);
+   }
+
+   Sublist addItem(int index)
+   {
+      Sublist tempList(originalObjects);
+      tempList.indices = indices;
+      tempList.indices.push_back(index);
+      tempList.sum = this->sum + originalObjects->at(index);
+      return tempList;
+   };
+
+   void showSublist() const
+   {
+      unsigned int i;
+      cout << "Sublist -----------------------------" << endl;
+      cout << "Sum: " << sum << endl;
+      for (i = 0; i < indices.size() - 1; i++)
+      {
+         cout << "array[" << indices[i] << "] = " << originalObjects->at(indices[i]) << ", ";
+      }
+      cout << "array[" << indices[i] << "] = " << originalObjects->at(indices[i]);
+      cout << endl;
+
+   };
+
+
+   int getSum() const { return sum; }
+private:
+   int sum;
+   vector<int> *originalObjects;
+   vector<int> indices;
+};
+
+int main() {
+   int TARGET = 75;
+   vector<int> dataSet;   
+   vector<Sublist> choices, choices2;
+   vector<Sublist>::iterator iter;
+   int max = 0, masterSum = 0;
+   unsigned int k, j;
+   bool foundPerfect = false;
+
+   dataSet.push_back(20); dataSet.push_back(12); dataSet.push_back(22);
+   dataSet.push_back(15); dataSet.push_back(25);
+   dataSet.push_back(19); dataSet.push_back(29);
+   dataSet.push_back(18);
+   dataSet.push_back(11); dataSet.push_back(13); dataSet.push_back(17);
+
+   choices.clear();
+   cout << "Target time: " << TARGET << endl;
+
+   Sublist best(nullptr);
+   
+   for (k = 0; k < dataSet.size(); k++)
+   {
+      masterSum += dataSet[k];
+   }
+   if (masterSum <= TARGET) {
+      cout << "Sum = " << masterSum << endl;;
+      for (k = 0; k < dataSet.size(); k++)
+         cout << "array[" << k << "] = " << dataSet.at(k) << ", ";
+      cout << endl;
+   }
+   else {
+      Sublist sub(&dataSet);
+      choices.push_back(sub);
+
+      for (k = 0; k < dataSet.size(); k++) {
+         for (iter = choices.begin(); iter < choices.end(); iter++) {       
+            Sublist temp = iter->addItem(k);
+            if (temp.getSum() == TARGET) {
+               best = temp;
+               foundPerfect = true;
+               break;
+            }
+            else if (temp.getSum() < TARGET) {
+               choices2.push_back(temp);
+               if (temp.getSum() > max) {
+                  best = temp;
+                  max = temp.getSum();                  
+               }
+            }
+         }
+         if (foundPerfect == true)
+         {
+            break;
+         }
+         for (j = 0; j < choices2.size(); j++)
+         {
+            choices.push_back(choices2.at(j));
+         }
+         choices2.clear();
+      }
+      foundPerfect = false;
+      best.showSublist();
+   }
+   return 0;
+}
+
+
+
+
+
+/*
+_____________________________Test run Part A #1_________________________________________________________
+Target time: 75
+Sublist -----------------------------
+Sum: 75
+array[1] = 12, array[3] = 15, array[5] = 19, array[6] = 29
+Press any key to continue . . .
+________________________________________________________________________________________________________
+*/
+
+/*
+_____________________________Test run Part A #2_________________________________________________________
+Target time: 2000
+Sum = 201
+array[0] = 20, array[1] = 12, array[2] = 22, array[3] = 15, array[4] = 25, array[5] = 19, array[6] = 29, array[7] = 18, array[8] = 11, array[9] = 13, array[10] = 17,
+Press any key to continue . . .
+________________________________________________________________________________________________________
+*/
+
+/*
+_____________________________Test run Part A #3_________________________________________________________
+Target time: 197
+Sublist -----------------------------
+Sum: 190
+array[0] = 20, array[1] = 12, array[2] = 22, array[3] = 15, array[4] = 25, array[5] = 19, array[6] = 29, array[7] = 18, array[9] = 13, array[10] = 17
+Press any key to continue . . .
+________________________________________________________________________________________________________
+*/
+
+//Foothill College CSC 2C
+//Michael Silin Assignment 1 Part B
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include "iTunes.h"
+using namespace std;
+
+class Sublist
+{
+public:
+   Sublist(vector<iTunesEntry> *orig)
+      : sum(0), originalObjects(orig)
+   {
+      for (unsigned int i = 0; i < indices.size(); i++)
+         sum += originalObjects->at(i).getTime();
+   }
+
+   Sublist addItem(int index)
+   {
+      Sublist tempList(originalObjects);
+      tempList.indices = indices;
+      tempList.indices.push_back(index);
+      tempList.sum = this->sum + originalObjects->at(index).getTime();
+      return tempList;
+   };
+
+   void showSublist() const
+   {
+      unsigned int i;
+      cout << "Sublist -----------------------------" << endl;
+      cout << "Sum: " << sum << endl;
+      string blah;
+      for (i = 0; i < indices.size() - 1; i++)
+      {
+         blah += originalObjects->at(indices[i]).getTitle() + (" by ");
+         blah += originalObjects->at(indices[i]).getArtist() + ("(");
+         cout << "array[" << indices[i] << "] = " << blah << originalObjects->at(indices[i]).getTime() << ("),   ");
+         blah.clear();
+      }
+      blah += originalObjects->at(indices[i]).getTitle() + (" by ");
+      blah += originalObjects->at(indices[i]).getArtist() + ("(");
+      cout << "array[" << indices[i] << "] = " << blah << originalObjects->at(indices[i]).getTime() << (")   ");
+      blah.clear();
+      cout << endl;
+
+   };
+
+
+   int getSum() const { return sum; }
+private:
+   int sum;
+   vector<iTunesEntry> *originalObjects;
+   vector<int> indices;
+};
+
+int main() {
+   const int TARGET = 1600;
+   vector<iTunesEntry> dataSet;
+   vector<Sublist> choices, choices2;
+   vector<Sublist>::iterator iter, iterBest;
+   int k, max = 0, array_size, masterSum = 0;
+
+   bool foundPerfect = false;
+   Sublist best(nullptr);
+   // read the data
+   iTunesEntryReader tunes_input("itunes_file.txt");
+   if (tunes_input.readError())
+   {
+      cout << "couldn't open " << tunes_input.getFileName()
+         << " for input.\n";
+      exit(1);
+   }
+
+   // time the algorithm -------------------------
+   clock_t startTime, stopTime;
+   startTime = clock();
+
+   // create a vector of objects for our own use:
+   array_size = tunes_input.getNumTunes();
+   for (int k = 0; k < array_size; k++)
+   {
+      dataSet.push_back(tunes_input[k]);
+   }
+   cout << "Target time: " << TARGET << endl;
+   for (k = 0; k < array_size; k++) {
+      dataSet.push_back(tunes_input[k]);
+      masterSum += tunes_input[k].getTime();
+   }
+   if (masterSum <= TARGET) {
+      cout << "Number of elements: " << array_size << endl;
+      cout << "Sum of this sublist = " << masterSum << endl;
+      string blah;
+      for (k = 0; k < array_size - 1; k++)
+      {
+         blah += dataSet[k].getTitle() + (" by ");
+         blah += dataSet[k].getArtist() + ("(");
+         cout << "array[" << k << "] = " << blah << dataSet[k].getTime() << ("),   ");
+         blah.clear();
+      }
+      blah += dataSet[k].getTitle() + (" by ");
+      blah += dataSet[k].getArtist() + ("(");
+      cout << "array[" << k << "] = " << blah << dataSet[k].getTime() << (")   ");
+      blah.clear();
+      cout << endl;
+   }
+   else {
+      choices.clear();
+      Sublist temp(&dataSet);
+      choices.push_back(temp);
+      for (unsigned k = 0; k < dataSet.size(); k++) 
+      {
+         for (iter = choices.begin(); iter < choices.end(); iter++) {
+            Sublist newSublist = iter->addItem(k);
+            if (newSublist.getSum() == TARGET) {
+               foundPerfect = true;
+               best = newSublist;
+               // newSublist.showSublist();
+               break;
+            }
+            else if (newSublist.getSum() < TARGET) {
+               choices2.push_back(newSublist);
+               if (newSublist.getSum() > max) {
+                  best = newSublist;
+                  max = newSublist.getSum();                  
+               }
+            }
+         }
+         if (foundPerfect == true)
+            break;
+         for (unsigned j = 0; j < choices2.size(); j++)
+         {
+            choices.push_back(choices2.at(j));
+         }
+         choices2.clear();
+      }
+      best.showSublist();
+      
+   }
+   stopTime = clock();
+   cout << "\nAlgorithm Elapsed Time: "
+      << (double)(stopTime - startTime) / (double)CLOCKS_PER_SEC << " seconds."
+      << endl << endl;
+   return 0;
+}
+
+
+/*
+_____________________________Test run Part B #1_________________________________________________________
+Target time: 3600
+Sublist -----------------------------
+Sum: 3600
+array[0] = Cowboy Casanova by Carrie Underwood(236),   array[1] = Quitter by Carrie Underwood(220),   array[2] = Russian Roulette by Rihanna(228),   array[4] = Monkey Wrench by Foo Fighters(230),   array[5] = Pretending by Eric Clapton(283),   array[6] = Bad Love by Eric Clapton(308),   array[7] = Everybody's In The Mood by Howlin' Wolf(178),   array[8] = Well That's All Right by Howlin' Wolf(175),   array[9] = Samson and Delilah by Reverend Gary Davis(216),   array[11] = Hot Cha by Roy Buchanan(208),   array[12] = Green Onions by Roy Buchanan(443),   array[13] = I'm Just a Prisoner by Janiva Magness(230),   array[14] = You Were Never Mine by Janiva Magness(276),   array[15] = Hobo Blues by John Lee Hooker(187),   array[16] = I Can't Quit You Baby by John Lee Hooker(182)
+
+Algorithm Elapsed Time: 2.43 seconds.
+
+Press any key to continue . . .
+________________________________________________________________________________________________________
+*/
+
+/*
+_____________________________Test run Part B #2_________________________________________________________
+Target time: 1877
+Sublist -----------------------------
+Sum: 1877
+array[0] = Cowboy Casanova by Carrie Underwood(236),   array[1] = Quitter by Carrie Underwood(220),   array[2] = Russian Roulette by Rihanna(228),   array[4] = Monkey Wrench by Foo Fighters(230),   array[5] = Pretending by Eric Clapton(283),   array[6] = Bad Love by Eric Clapton(308),   array[7] = Everybody's In The Mood by Howlin' Wolf(178),   array[10] = Twelve Sticks by Reverend Gary Davis(194)
+
+Algorithm Elapsed Time: 0.034 seconds.
+
+Press any key to continue . . .
+
+________________________________________________________________________________________________________
+*/
+
+/*
+_____________________________Test run Part B #3_________________________________________________________
+Target time: 4000
+Sublist -----------------------------
+Sum: 4000
+array[0] = Cowboy Casanova by Carrie Underwood(236),   array[1] = Quitter by Carrie Underwood(220),   array[2] = Russian Roulette by Rihanna(228),   array[3] = All My Life by Foo Fighters(263),   array[4] = Monkey Wrench by Foo Fighters(230),   array[5] = Pretending by Eric Clapton(283),   array[6] = Bad Love by Eric Clapton(308),   array[7] = Everybody's In The Mood by Howlin' Wolf(178),   array[8] = Well That's All Right by Howlin' Wolf(175),   array[9] = Samson and Delilah by Reverend Gary Davis(216),   array[11] = Hot Cha by Roy Buchanan(208),   array[12] = Green Onions by Roy Buchanan(443),   array[13] = I'm Just a Prisoner by Janiva Magness(230),   array[16] = I Can't Quit You Baby by John Lee Hooker(182),   array[17] = That's The Homie by Snoop Dogg(343),   array[18] = Gangsta Luv by Snoop Dogg(257)
+
+Algorithm Elapsed Time: 9.103 seconds.
+
+Press any key to continue . . .
+________________________________________________________________________________________________________
+*/

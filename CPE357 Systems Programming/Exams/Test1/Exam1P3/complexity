@@ -1,0 +1,4 @@
+Complexity Scores
+Score | ln-ct | nc-lns| file-name(line): proc-name
+   59      30      30   P3.c(4): main
+total nc-lns       30

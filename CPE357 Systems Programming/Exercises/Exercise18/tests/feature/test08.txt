@@ -1,0 +1,1 @@
+Close a pipe-end that has already been closed.

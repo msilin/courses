@@ -1,0 +1,3 @@
+With memory: Adds elements to the list using addHead and/or addTail in a
+variety of orders and then deletes all from the tail. Prints out the list
+after every deletion.

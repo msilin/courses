@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "memmon.h"
+#include "linkedList.h"
+
+/*ListNode* addHead(ListNode *list, int value)
+{
+   ListNode * temp = list;
+   list =(ListNode*)malloc(sizeof(ListNode));
+   if (!list)
+   {
+      fprintf(stderr, "malloc failure attempting to add %d\n", value);
+      exit(EXIT_FAILURE);
+   }
+   if (!temp)
+   {
+      list->value = value;
+      list->next = NULL;
+      return list;
+   }
+   list->value = value;
+   list->next = temp;
+   return list;
+}*/
+
+ListNode* addHead(ListNode *list, int value)
+{
+   ListNode * temp =(ListNode*)malloc(sizeof(ListNode));
+   if (!temp)
+   {
+      fprintf(stderr, "malloc failure attempting to add %d\n", value);
+      exit(EXIT_FAILURE);
+   }
+   if (!temp)
+   {
+      return temp;
+   }
+   temp->value = value;
+   temp->next = list;
+   return temp;
+}
+
+
+
+
+
+
+
+
+
+
+ListNode* addTail(ListNode *list, int value)
+{
+   
+   ListNode * temp = list;
+   ListNode * temp2;
+   if (!temp)
+   {
+      temp =(ListNode*)malloc(sizeof(ListNode));
+      if (!temp)
+      {
+         fprintf(stderr, "malloc failure attempting to add %d\n", value);
+         exit(EXIT_FAILURE);
+      }
+      temp->value = value;
+      temp->next = NULL;
+      return temp;
+   }
+
+   while (temp->next)
+   {
+      temp = temp->next;
+   }
+   temp2 =(ListNode*)malloc(sizeof(ListNode));
+   if (!temp2)
+   {
+      fprintf(stderr, "malloc failure attempting to add %d\n", value);
+      exit(EXIT_FAILURE);
+   }
+   temp->next = temp2;
+   temp2->value = value;
+   temp2->next = NULL;
+   return list;
+}
+ListNode* deleteNode(ListNode *list, int index)
+{
+   ListNode * temp2 = list;
+   ListNode * temp = list;
+   int i = 0;
+   if (!list)
+   {
+      return list;
+   }
+   if ( index == 0 )
+   {
+      list = list->next;
+      free(temp);
+      return list;
+   }
+   for(; i < index - 1; i++)
+   {
+      if (!temp->next)
+      {
+         fprintf(stderr, "Index %d is out of bounds\n", index);
+      }
+      temp2 = temp;
+      temp = temp->next;
+   }
+   if (!temp->next || index < 0)
+   {
+      fprintf(stderr, "Index %d is out of bounds\n", index);
+      return list;
+   }
+   if ( !temp->next->next)
+   {
+      free(temp->next);
+      temp->next = NULL;
+      return list;
+   }
+   temp2 = temp->next;
+   temp->next = temp->next->next;
+   free(temp2);
+   return list;
+
+}
+void printList(ListNode *list)
+{
+   ListNode * temp = list;
+   printf("List: ");
+   if ( !list )
+   {
+      printf("Empty\n");
+      return;
+   }
+      while (temp->next)
+      {
+         printf("%d ", temp->value);
+         temp = temp->next;
+      }
+      printf("%d\n", temp->value);
+}
+

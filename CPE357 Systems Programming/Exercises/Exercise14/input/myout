@@ -1,0 +1,81 @@
+Enter command (h|t|d|p|q): Value: Number of memory allocations: 1
+Number of memory frees      : 0
+Peak memory allocation      : 8
+Current memory allocation   : 8
+
+Enter command (h|t|d|p|q): Value: Number of memory allocations: 2
+Number of memory frees      : 0
+Peak memory allocation      : 16
+Current memory allocation   : 16
+
+Enter command (h|t|d|p|q): Value: Number of memory allocations: 3
+Number of memory frees      : 0
+Peak memory allocation      : 24
+Current memory allocation   : 24
+
+Enter command (h|t|d|p|q): List: 48 49 50
+Number of memory allocations: 3
+Number of memory frees      : 0
+Peak memory allocation      : 24
+Current memory allocation   : 24
+
+Enter command (h|t|d|p|q): Value: Number of memory allocations: 4
+Number of memory frees      : 0
+Peak memory allocation      : 32
+Current memory allocation   : 32
+
+Enter command (h|t|d|p|q): List: 48 49 50 47
+Number of memory allocations: 4
+Number of memory frees      : 0
+Peak memory allocation      : 32
+Current memory allocation   : 32
+
+Enter command (h|t|d|p|q): Value: Number of memory allocations: 5
+Number of memory frees      : 0
+Peak memory allocation      : 40
+Current memory allocation   : 40
+
+Enter command (h|t|d|p|q): List: 48 49 50 47 46
+Number of memory allocations: 5
+Number of memory frees      : 0
+Peak memory allocation      : 40
+Current memory allocation   : 40
+
+Enter command (h|t|d|p|q): Index: Number of memory allocations: 5
+Number of memory frees      : 1
+Peak memory allocation      : 40
+Current memory allocation   : 32
+
+Enter command (h|t|d|p|q): List: 48 50 47 46
+Number of memory allocations: 5
+Number of memory frees      : 1
+Peak memory allocation      : 40
+Current memory allocation   : 32
+
+Enter command (h|t|d|p|q): Index: Number of memory allocations: 5
+Number of memory frees      : 2
+Peak memory allocation      : 40
+Current memory allocation   : 24
+
+Enter command (h|t|d|p|q): List: 48 47 46
+Number of memory allocations: 5
+Number of memory frees      : 2
+Peak memory allocation      : 40
+Current memory allocation   : 24
+
+Enter command (h|t|d|p|q): Index: Number of memory allocations: 5
+Number of memory frees      : 3
+Peak memory allocation      : 40
+Current memory allocation   : 16
+
+Enter command (h|t|d|p|q): List: 48 46
+Number of memory allocations: 5
+Number of memory frees      : 3
+Peak memory allocation      : 40
+Current memory allocation   : 16
+
+Enter command (h|t|d|p|q): Number of memory allocations: 5
+Number of memory frees      : 3
+Peak memory allocation      : 40
+Current memory allocation   : 16
+

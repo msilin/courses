@@ -1,0 +1,327 @@
+//Michaeel Silin QuickSort Module 
+#include <iostream>
+#include <stdio.h>
+#include "FHsort.h"
+#include "FHvector.h"
+#include <time.h>
+ 
+using namespace std;
+FHvector<int> fhVectorOfInts;
+
+
+template <typename Comparable>
+void  quickSortX(FHvector<Comparable> & a, int recLimit, int left, int right);
+// fill fhVectorOfInts with random values
+
+int main()
+{
+   int size, limit;
+   srand((unsigned int)time(NULL));
+   clock_t start, stop;
+   FHvector<int> fhVectorOfInts;
+   for ( size = 40000; size < 280001; size+=40000)
+   {
+      cout << "\nArray Size:" << size << "\n\n";
+      cout << "Recursion Limit" << "\t";
+      cout << "Sorting Time" << "\n";
+      for (limit = 2; limit <= 300; limit += 10) {
+         for (int i = 0; i < size; i++)
+            fhVectorOfInts.push_back(int(rand()));
+
+         start = clock();
+         quickSortX(fhVectorOfInts, limit, 0, size - 1);
+         stop = clock();
+         cout << limit << "\t\t";
+         cout << (double)(stop - start) / CLOCKS_PER_SEC << "\n";
+         fhVectorOfInts.clear();
+      }
+   }
+   
+
+
+   
+}
+
+
+template <typename Comparable>
+void quickSortX(FHvector<Comparable> & a, int limit, int left, int right)
+{
+   Comparable pivot;
+   int i, j;
+
+   if (left + limit <= right)
+   {
+      pivot = median3(a, left, right);
+      for (i = left, j = right - 1; ; )
+      {
+         while (a[++i] < pivot)
+            ;
+         while (pivot < a[--j])
+            ;
+         if (i < j)
+            mySwapFH(a[i], a[j]);
+         else
+            break;
+      }
+
+      mySwapFH(a[i], a[right - 1]);  // restore pivot
+
+                                     // recursive calls on smaller sub-groups
+      quickSortX(a, limit, left, i - 1);
+      quickSortX(a, limit, i + 1, right);
+   }
+   else
+      // non-recursive escape valve - insertionSort
+      insertionSort(a, left, right);
+}
+Array Size:40000
+/* RUNS 
+Recursion Limit Sorting Time
+2               0.025
+12              0.025
+22              0.025
+32              0.029
+42              0.031
+52              0.035
+62              0.037
+72              0.04
+82              0.044
+92              0.047
+102             0.053
+112             0.052
+122             0.059
+132             0.061
+142             0.063
+152             0.076
+162             0.069
+172             0.071
+182             0.077
+192             0.079
+202             0.084
+212             0.085
+222             0.091
+232             0.091
+242             0.095
+252             0.098
+262             0.101
+272             0.108
+282             0.109
+292             0.122
+
+Array Size:80000
+
+Recursion Limit Sorting Time
+2               0.053
+12              0.049
+22              0.061
+32              0.064
+42              0.07
+52              0.078
+62              0.085
+72              0.091
+82              0.093
+92              0.098
+102             0.107
+112             0.111
+122             0.119
+132             0.126
+142             0.126
+152             0.134
+162             0.136
+172             0.145
+182             0.153
+192             0.159
+202             0.164
+212             0.173
+222             0.176
+232             0.182
+242             0.194
+252             0.197
+262             0.205
+272             0.207
+282             0.224
+292             0.225
+
+Array Size:120000
+
+Recursion Limit Sorting Time
+2               0.087
+12              0.076
+22              0.08
+32              0.088
+42              0.105
+52              0.105
+62              0.125
+72              0.123
+82              0.137
+92              0.148
+102             0.168
+112             0.164
+122             0.179
+132             0.179
+142             0.203
+152             0.238
+162             0.264
+172             0.263
+182             0.257
+192             0.267
+202             0.298
+212             0.301
+222             0.307
+232             0.327
+242             0.338
+252             0.354
+262             0.361
+272             0.366
+282             0.373
+292             0.384
+
+Array Size:160000
+
+Recursion Limit Sorting Time
+2               0.128
+12              0.138
+22              0.123
+32              0.135
+42              0.143
+52              0.159
+62              0.172
+72              0.184
+82              0.203
+92              0.219
+102             0.23
+112             0.241
+122             0.258
+132             0.278
+142             0.289
+152             0.293
+162             0.313
+172             0.316
+182             0.348
+192             0.352
+202             0.389
+212             0.414
+222             0.531
+232             0.511
+242             0.472
+252             0.497
+262             0.462
+272             0.493
+282             0.539
+292             0.524
+
+Array Size:200000
+
+Recursion Limit Sorting Time
+2               0.178
+12              0.183
+22              0.185
+32              0.182
+42              0.194
+52              0.264
+62              0.218
+72              0.256
+82              0.246
+92              0.253
+102             0.273
+112             0.302
+122             0.345
+132             0.356
+142             0.383
+152             0.392
+162             0.405
+172             0.412
+182             0.436
+192             0.445
+202             0.471
+212             0.48
+222             0.503
+232             0.529
+242             0.558
+252             0.567
+262             0.589
+272             0.641
+282             0.647
+292             0.64
+
+Array Size:240000
+
+Recursion Limit Sorting Time
+2               0.201
+12              0.186
+22              0.198
+32              0.21
+42              0.225
+52              0.237
+62              0.254
+72              0.294
+82              0.292
+92              0.315
+102             0.347
+112             0.357
+122             0.386
+132             0.443
+142             0.44
+152             0.445
+162             0.485
+172             0.49
+182             0.51
+192             0.532
+202             0.582
+212             0.575
+222             0.615
+232             0.609
+242             0.64
+252             0.651
+262             0.661
+272             0.7
+282             0.79
+292             0.736
+
+Array Size:280000
+
+Recursion Limit Sorting Time
+2               0.202
+12              0.202
+22              0.191
+32              0.206
+42              0.242
+52              0.267
+62              0.3
+72              0.321
+82              0.352
+92              0.359
+102             0.393
+112             0.413
+122             0.464
+132             0.465
+142             0.486
+152             0.504
+162             0.551
+172             0.558
+182             0.597
+192             0.607
+202             0.63
+212             0.669
+222             0.731
+232             0.724
+242             0.773
+252             0.792
+262             0.811
+272             0.839
+282             0.846
+292             0.845
+Press any key to continue . . .
+
+The fastest sorts by array size :
+
+40,000 : 22
+80,000 : 22
+120,000  : 12
+160,000 : 22
+200,000 : 32
+240,000 : 12
+280,000 : 22
+
+It seems that the best number to choose is actually closer to 22 rather than closer to 12 or 15 with my data. With the exception of 200,000 22 was definitely the fastest sort time. 
+*/

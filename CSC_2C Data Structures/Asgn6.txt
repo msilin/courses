@@ -1,0 +1,276 @@
+//       -------------------------------------FHhashQPwFind_h-------------------------------------------
+// Michael Silin
+#ifndef FHhashQPwFind_h
+#define FHhashQPwFind_h
+#include "EBookEntry.h"
+#include "FHhashQP.h"
+#include <stdio.h>
+#include <string>
+
+template <class Object, typename KeyType>
+class FHhashQPwFind : public FHhashQP<Object> {
+public:
+   FHhashQPwFind(int tableSize = INIT_TABLE_SIZE) : FHhashQP<Object>::FHhashQP(tableSize) { };
+   class NotFoundException {};
+   const Object find(const KeyType& key);
+
+protected:
+   int   myHashKey(const KeyType & key) const;
+   int   findPosKey(const KeyType & key) const;
+};
+
+template <class Object, typename KeyType>
+const Object FHhashQPwFind<Object, KeyType>::find(const KeyType& key)
+{
+   if (this->mArray[findPosKey(key)].state != this->ACTIVE)
+      throw NotFoundException();
+   return this->mArray[findPosKey(key)].data;
+}
+
+template <class Object, typename KeyType>
+int  FHhashQPwFind<Object, KeyType>::myHashKey(const KeyType & key) const {
+   int   hashVal;
+
+   hashVal = Hash(key) % this->mTableSize;
+   if (hashVal < 0)
+      hashVal += this->mTableSize;
+
+   return hashVal;
+}
+
+template <class Object, typename KeyType>
+int FHhashQPwFind<Object, KeyType>::findPosKey(const KeyType & key) const
+{
+   int   kthOddNum = 1;
+   int   index = myHashKey(key);
+   while ((this->mArray[index].state != this->EMPTY) && (this->mArray[index].data.getETextNum() != key))
+   {
+      index += kthOddNum;
+      kthOddNum += 2;
+      if (index >= this->mTableSize)
+         index -= this->mTableSize;
+   }
+   return index;
+}
+
+#endif
+
+
+
+
+//      -------------------------------------------------DRIVER-----------------------------------------
+// Michael Silin Main
+
+#include <iostream>
+#include <stddef.h>
+#include "EBookEntry.h"
+#include "FHhashQP.h"
+#include "FHhashQPwFind.h"
+#define NUM_RANDOM_INDICES 25
+int getKey(const EBookEntry & item);
+// string getKey( const EBookEntry & item);
+
+
+int main()
+{
+   int   i = 0;
+   EBookEntry book;
+   FHhashQPwFind<EBookEntry, int> hashTable(600); // for ID equality
+                                                  // FHhashQPwFind<EBookEntry, string> hashTable; // for any string equality
+   EBookEntryReader  bookInput("catalog-short4.txt");
+   // we want two books to be identical in different ways:  ID or author
+   EBookEntry::setSortType(EBookEntry::SORT_BY_ID);
+   // EBookEntry::setSortType(EBookEntry::SORT_BY_CREATOR);
+
+   cout << bookInput.getFileName() << endl;
+   cout <<"Number of Books:"<< bookInput.getNumBooks() << endl;
+      
+      // create a QP hash table of EBooks ...
+      // generate some random indices into the EBookEntryReader vector ...
+      int   data[NUM_RANDOM_INDICES];
+   cout << " Generating Random Indices\n";
+   for (; i < NUM_RANDOM_INDICES; i++)
+      data[i] = rand() % bookInput.getNumBooks();
+
+   // insert all books into the hash table (if SORT_BY_ID) or fewer (If SORT_BY_CREATOR) ...
+   
+
+   for (i = 0; i < bookInput.getNumBooks(); i++)
+   {
+      hashTable.insert(bookInput[i]);     
+   }
+   // display NUM_RANDOM_INDICES books from array ...
+   for (i = 0; i < NUM_RANDOM_INDICES; i++)
+   {
+      cout << "Book #" << i << ": " << bookInput[data[i]].getTitle() << endl;;
+   }
+   
+
+
+   // attempt to find on the selected key
+   cout << endl << "The same random books from the hash table " << endl<< endl;
+   for (int k = 0; k < NUM_RANDOM_INDICES; k++)
+   {
+      try
+      {
+         book = hashTable.find(bookInput[data[k]].getETextNum());
+         // book = hashTable.find( bookInput[ randomIndices[k] ].getCreator() );
+         cout << book.getTitle() ;
+
+
+      }
+      catch (...)
+      {
+         cout << "no.  ";
+      }
+      cout << endl;
+   }
+
+   // test known failures exceptions:
+   try
+   {
+      book = hashTable.find(-3);
+      // book = hashTable.find( "Jack Kerouac" );
+
+   }
+   catch (...)
+   {
+      cout << "no.  ";
+   }
+
+   // more failures
+
+   try
+   {
+      book = hashTable.find(10000);
+   }
+   catch (...)
+   {
+      cout << "no.  ";
+   }
+
+   try
+   {
+      book = hashTable.find(100000);
+   }
+   catch (...)
+   {
+      cout << "no.  ";
+   }
+}
+
+/*
+// used for author equality
+string getKey( const EBookEntry & item )
+{
+return item.getCreator() ;
+}
+*/
+
+
+// used for ID equality
+int getKey(const EBookEntry & item)
+{
+   return item.getETextNum();
+}
+
+// string   getKey(const EBookEntry & item) { return item.getTitle(); }
+int  Hash(const EBookEntry & item)
+{
+   return item.getETextNum();
+}
+
+int  Hash(int key)
+{
+   return key;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*                 RUN
+
+catalog-short4.txt
+Number of Books:4863
+ Generating Random Indices
+Book #0: Dick and His Cat and Other Tales
+Book #1: The Slant Book
+Book #2: The Book of Tea
+Book #3: Journeys Through Bookland, Vol. 5
+Book #4: The Border WatchA Story of the Great Chief's Last Stand
+Book #5: The Heroic Enthusiasts (Gli Eroici Furori) Part the SecondAn Ethical Poem
+Book #6: The Red Hand of Ulster
+Book #7: The Nursery, July 1877, XXII. No. 1A Monthly Magazine for Youngest Readers
+Book #8: The Gospels in Four Part Harmony
+Book #9: The Road to Frontenac
+Book #10: History of Education
+Book #11: Ravensdene Court
+Book #12: Casa Braccio, Volumes 1 and 2 (of 2)
+Book #13: Musical Memories
+Book #14: Lives of the Most Eminent Painters Sculptors and ArchitectsVol. 05 ( of 10) Andrea da Fiesole to Lorenzo Lotto
+Book #15: The Helpful Robots
+Book #16: A Letter to the Right Honorable the Lord Chancellor, on the Nature and Interpretation of Unsoundness of Mind, and Imbecility of Intellect
+Book #17: Hold Up Your Heads, Girls! : Helps for Girls, in School and Out
+Book #18: Blow The Man DownA Romance Of The Coast - 1916
+Book #19: The Copper-Clad World
+Book #20: The Cult of Incompetence
+Book #21: The Works Of George MeredithA Linked Index to the Project Gutenberg Editions
+Book #22: The History of the Peloponnesian War
+Book #23: Keene, Louis
+Book #24: The Grecian Daughter
+
+The same random books from the hash table
+
+Dick and His Cat and Other Tales
+The Slant Book
+The Book of Tea
+Journeys Through Bookland, Vol. 5
+The Border WatchA Story of the Great Chief's Last Stand
+The Heroic Enthusiasts (Gli Eroici Furori) Part the SecondAn Ethical Poem
+The Red Hand of Ulster
+The Nursery, July 1877, XXII. No. 1A Monthly Magazine for Youngest Readers
+The Gospels in Four Part Harmony
+The Road to Frontenac
+History of Education
+Ravensdene Court
+Casa Braccio, Volumes 1 and 2 (of 2)
+Musical Memories
+Lives of the Most Eminent Painters Sculptors and ArchitectsVol. 05 ( of 10) Andrea da Fiesole to Lorenzo Lotto
+The Helpful Robots
+A Letter to the Right Honorable the Lord Chancellor, on the Nature and Interpretation of Unsoundness of Mind, and Imbecility of Intellect
+Hold Up Your Heads, Girls! : Helps for Girls, in School and Out
+Blow The Man DownA Romance Of The Coast - 1916
+The Copper-Clad World
+The Cult of Incompetence
+The Works Of George MeredithA Linked Index to the Project Gutenberg Editions
+The History of the Peloponnesian War
+Keene, Louis
+The Grecian Daughter
+no.  no.  no.  Press any key to continue . . .
+
+*/

@@ -1,0 +1,1 @@
+wget --auth-no-challenge --user "msilin" --ask-password $1

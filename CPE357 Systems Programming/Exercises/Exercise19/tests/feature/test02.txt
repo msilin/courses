@@ -1,0 +1,2 @@
+Test with several different Unix command that have no arguments and with
+non-existent commands (also with no arguments).

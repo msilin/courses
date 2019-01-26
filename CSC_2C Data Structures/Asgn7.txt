@@ -1,0 +1,242 @@
+/*--------------------------------------------------Main----------------------------------------------------*/
+
+//Michael Silin
+#include <stddef.h>
+#include <stdio.h> 
+#include <stdlib.h>
+#include "FHvector.h"
+#include <iostream>
+
+using namespace std;
+#include <time.h>
+#include <math.h>
+
+#define ARRAY_SIZE 31250
+
+
+
+template <typename Comparable>
+void  shellSort1(FHvector<Comparable> &a);
+
+template <typename Comparable>
+void  shellSortX(FHvector<Comparable> &a, int gap[], int gapSize);
+
+int main()
+{
+   clock_t start, stop;
+   FHvector<int> fhVectorOfInts1;
+   FHvector<int> fhVectorOfInts2;
+
+   int gapArray[] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
+   2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288,
+   1048576 };
+   
+   int sedgewickArray[18];  // to be computed using formulas
+   {
+      int d = 0;
+      for (int i = 0; i < 18; i++)
+      {
+         if (!(i % 2))
+         {
+            d = 9 * (pow(4, i / 2) - pow(2, i / 2)) + 1;
+            sedgewickArray[i] = (int)d;
+         }
+         else
+         {
+            d = pow(2, i / 2 + 2)* (pow(2, i / 2 + 2) - 3) + 1;
+            sedgewickArray[i] = (int)d;
+         }
+      }
+   }
+   int ciuraArray[18] = { 1 , 4 , 10, 23 , 57 , 132 , 301 , 701,1550 ,3410 ,7502, 16504, 33008, 66017, 132035, 264070, 580954, 1278100,};
+   //for (int i = 0; i + 9 < 15; i++)
+      //ciuraArray[i + 9] = (9 * ciuraArray[i + 8]) / 4;
+
+   int sedgeIncerpi[16] = { 1 };
+   int i;
+   for (i = 1; i < 16; i++)
+   {
+      sedgeIncerpi[i] = pow(4, i) + 3 * pow(2, i - 1) + 1;
+   }
+   
+   // fill distinct vectors with identical random values so we can compare gaps
+      
+   fhVectorOfInts1.clear();
+   srand((unsigned int)time(NULL));
+   for (int k = 0; k < 6; k++)
+   {
+      fhVectorOfInts1.clear();
+      cout << "\m\nTest #" << k << "\n";
+      int size = rand()*10 % 1000000 ;
+      for (int i = 0; i < size; i++)
+      {
+         fhVectorOfInts1.push_back((int)rand());
+      }
+      fhVectorOfInts2 = fhVectorOfInts1;
+      cout << "Size: " << size;
+      cout << "\nShell's implied gap sequence: ";
+      start = clock();
+      shellSort1(fhVectorOfInts1);
+      stop = clock();
+      cout << double(stop - start) / CLOCKS_PER_SEC << " seconds. " << endl;
+
+      fhVectorOfInts1 = fhVectorOfInts2;
+
+      cout << "\nShell's explicit gap sequence: ";
+      start = clock();
+      shellSortX(fhVectorOfInts1, gapArray, 21);
+      stop = clock();
+      cout << double(stop - start) / CLOCKS_PER_SEC << " second. " << endl;
+
+      fhVectorOfInts1 = fhVectorOfInts2;
+      cout << "\nSedgewick Array: ";
+      start = clock();
+      shellSortX(fhVectorOfInts1, sedgewickArray, 18);
+      stop = clock();
+      cout << double(stop - start) / CLOCKS_PER_SEC << " second. " << endl;
+
+      fhVectorOfInts1 = fhVectorOfInts2;
+      cout << "\nSedgeIncerpi Array: ";
+      start = clock();
+      shellSortX(fhVectorOfInts1, sedgeIncerpi, 16);
+      stop = clock();
+      cout << double(stop - start) / CLOCKS_PER_SEC << " second. " << endl;
+
+      fhVectorOfInts1 = fhVectorOfInts2;
+      cout << "\nCiaura Array: ";
+      start = clock();
+      shellSortX(fhVectorOfInts1, ciuraArray, 18);
+      stop = clock();
+      cout << double(stop - start) / CLOCKS_PER_SEC << " second. " << endl;
+   }
+}
+
+
+
+
+   template <typename Comparable>
+   void shellSort1(FHvector<Comparable> & a)
+   {
+      int k, pos, arraySize, ONE=0;
+      Comparable tmp;
+
+      arraySize = a.size();
+      for (ONE = arraySize / 2; ONE > 0; ONE /= 2)
+         for (pos = ONE; pos < arraySize; pos++)
+         {
+            tmp = a[pos];
+            for (k = pos; k >= ONE && tmp < a[k - ONE]; k -= ONE)
+               a[k] = a[k - ONE];
+            a[k] = tmp;
+         }
+   }
+
+   template <typename Comparable>
+   void  shellSortX(FHvector<Comparable> &a, int gap[], int gapSize)
+   {
+      int i, k = 0, pos, ONE = 0;
+      Comparable tmp;
+
+      int arraySize = a.size();
+      for (i = gapSize - 1; i >= 0 ; i--) {
+         ONE = gap[i];
+         for (pos = ONE; pos < arraySize; pos++)
+         {
+            tmp = a[pos];
+            for (k = pos; k >= ONE && tmp < a[k - ONE]; k -= ONE)
+            {
+               a[k] = a[k - ONE];
+            }
+            a[k] = tmp;
+         }
+      }
+   }
+/*--------------------------------------------------Runs----------------------------------------------------*/
+m
+Test #0
+Size: 9970
+Shell's implied gap sequence: 0.014 seconds.
+
+Shell's explicit gap sequence: 0.033 second.
+
+Sedgewick Array: 0.01 second.
+
+SedgeIncerpi Array: 0.012 second.
+
+Ciaura Array: 0.01 second.
+m
+Test #1
+Size: 96150
+Shell's implied gap sequence: 0.187 seconds.
+
+Shell's explicit gap sequence: 0.789 second.
+
+Sedgewick Array: 0.127 second.
+
+SedgeIncerpi Array: 0.148 second.
+
+Ciaura Array: 0.125 second.
+m
+Test #2
+Size: 253500
+Shell's implied gap sequence: 0.591 seconds.
+
+Shell's explicit gap sequence: 3.728 second.
+
+Sedgewick Array: 0.354 second.
+
+SedgeIncerpi Array: 0.414 second.
+
+Ciaura Array: 0.356 second.
+m
+Test #3
+Size: 102880
+Shell's implied gap sequence: 0.206 seconds.
+
+Shell's explicit gap sequence: 0.866 second.
+
+Sedgewick Array: 0.149 second.
+
+SedgeIncerpi Array: 0.162 second.
+
+Ciaura Array: 0.134 second.
+m
+Test #4
+Size: 291230
+Shell's implied gap sequence: 0.74 seconds.
+
+Shell's explicit gap sequence: 4.004 second.
+
+Sedgewick Array: 0.41 second.
+
+SedgeIncerpi Array: 0.478 second.
+
+Ciaura Array: 0.411 second.
+m
+Test #5
+Size: 232570
+Shell's implied gap sequence: 0.545 seconds.
+
+Shell's explicit gap sequence: 3.292 second.
+
+Sedgewick Array: 0.325 second.
+
+SedgeIncerpi Array: 0.377 second.
+
+Ciaura Array: 0.324 second.
+Press any key to continue . . .
+
+/*--------------------------------------------------Table----------------------------------------------------*/
+
+Table: 
+
+Size		9970		96150		253500		102880		291230		232570
+Shell Implied	0.014 		0.187 		0.591 		0.206		0.74 		0.545 
+Shell Explicit	0.033 		1.789		3.728 		0.866 		4.004 		3.292 
+Sedgewich	0.01 		0.127 		0.354 		0.149 		0.41 		0.325 
+SedgeIncerpi	0.012 		0.148		0.414		0.162 		0.478 		0.377 
+Ciura 		0.01 		0.125 		0.356 		0.134 		0.411 		0.324 
+
+Why does Shell's gap sequence implied by shellSort1() give a different timing result than the explicit array described above and passed to shellSortX()?  Which is faster and why?
+
+ShellSort1 is faster because it starts at the max size of the array. ShellSortX starts at the max size of the array defined in the main, which is usually larger than actual size of the array. 

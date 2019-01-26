@@ -1,0 +1,4 @@
+Test with an array with 100 elements.
+
+Note: Valgrind is used to verify your solution has not memory leaks
+      or errors.

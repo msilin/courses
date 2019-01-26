@@ -1,0 +1,61 @@
+
+testcase1.mb Loaded ok, program size=32 bytes.
+
+Input File: testcase1.mb
+@PC=0x00000000, Opcode= 0x03, J Type (jal), addr= 0x010000C
+JumpAddr: 0x00400034
+@PC=0x00000004, Opcode= 0x0D, I Type (ori)
+RS= 0 ($zero), RT= 2 ($v0), Imm=0x000A, sigext: 0x0000000A (10)
+0x0000000C Invalid Instruction
+@PC=0x0000000C, Opcode= 0x00, R Type, Function= 0x26 (xor)
+RS= 16 ($s0), RT= 17 ($s1), RD= 4 ($a0), shamt= 0
+@PC=0x00000010, Opcode= 0x0C, I Type (andi)
+RS= 8 ($t0), RT= 5 ($a1), Imm=0x0002, sigext: 0x00000002 (2)
+@PC=0x00000014, Opcode= 0x04, I Type (beq)
+RS= 4 ($a0), RT= 8 ($t0), Imm=0xFFFE, sigext: 0xFFFFFFFE (-2),
+branchAddr=0x00000010
+@PC=0x00000018, Opcode= 0x02, J Type (j), addr= 0x0100010
+JumpAddr: 0x0040005C
+@PC=0x0000001C, Opcode= 0x00, R Type, Function= 0x08 (jr)
+RS= 31 ($ra), RT= 0 ($zero), RD= 0 ($zero), shamt= 0
+
+
+testcase2.mb Loaded ok, program size=68 bytes.
+
+Input File: testcase2.mb
+0x00001234 Invalid Instruction
+0x00001111 Invalid Instruction
+@PC=0x00000008, Opcode= 0x23, I Type (lw)
+RS= 0 ($zero), RT= 8 ($t0), Imm=0x0000, sigext: 0x00000000 (0),
+Effaddr=R[$zero] + 0x00000000
+@PC=0x0000000C, Opcode= 0x23, I Type (lw)
+RS= 0 ($zero), RT= 9 ($t1), Imm=0x0004, sigext: 0x00000004 (4),
+Effaddr=R[$zero] + 0x00000004
+@PC=0x00000010, Opcode= 0x03, J Type (jal), addr= 0x000000F
+JumpAddr: 0x00000050
+@PC=0x00000014, Opcode= 0x08, I Type (addi)
+RS= 0 ($zero), RT= 14 ($t6), Imm=0x0004, sigext: 0x00000004 (4)
+@PC=0x00000018, Opcode= 0x05, I Type (bne)
+RS= 14 ($t6), RT= 0 ($zero), Imm=0x0005, sigext: 0x00000005 (5),
+branchAddr=0x00000030
+@PC=0x0000001C, Opcode= 0x20, I Type (lb)
+RS= 0 ($zero), RT= 8 ($t0), Imm=0x0000, sigext: 0x00000000 (0),
+Effaddr=R[$zero] + 0x00000000
+@PC=0x00000020, Opcode= 0x04, I Type (beq)
+RS= 8 ($t0), RT= 0 ($zero), Imm=0x0003, sigext: 0x00000003 (3),
+branchAddr=0x00000030
+@PC=0x00000024, Opcode= 0x00, R Type, Function= 0x25 (or)
+RS= 0 ($zero), RT= 2 ($v0), RD= 4 ($a0), shamt= 0
+@PC=0x00000028, Opcode= 0x0D, I Type (ori)
+RS= 0 ($zero), RT= 2 ($v0), Imm=0x000A, sigext: 0x0000000A (10)
+0x0000000C Invalid Instruction
+@PC=0x00000030, Opcode= 0x00, R Type, Function= 0x25 (or)
+RS= 0 ($zero), RT= 2 ($v0), RD= 4 ($a0), shamt= 0
+@PC=0x00000034, Opcode= 0x0D, I Type (ori)
+RS= 0 ($zero), RT= 2 ($v0), Imm=0x000A, sigext: 0x0000000A (10)
+0x0000000C Invalid Instruction
+@PC=0x0000003C, Opcode= 0x00, R Type, Function= 0x21 (addu)
+RS= 8 ($t0), RT= 9 ($t1), RD= 1 ($at), shamt= 0
+@PC=0x00000040, Opcode= 0x00, R Type, Function= 0x08 (jr)
+RS= 31 ($ra), RT= 0 ($zero), RD= 0 ($zero), shamt= 0
+

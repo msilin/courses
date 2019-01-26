@@ -1,0 +1,2 @@
+Open multiple pipes, read and write multiple values to them in no
+particular order, close them all, and quit.

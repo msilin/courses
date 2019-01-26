@@ -1,0 +1,4 @@
+Test with a variety of messages. Note that the child will not necessarily
+be in the same directory as the parent. When that is the case the argument
+provided to the parent will be a complete path. Be sure to test your
+solution with such a path.

@@ -1,0 +1,3 @@
+Tests the TEST_BOOLEAN macro with a representative sampling of
+actual-expect pairs. Also makes sure it supports long values and
+that failed test output goes to stderr.

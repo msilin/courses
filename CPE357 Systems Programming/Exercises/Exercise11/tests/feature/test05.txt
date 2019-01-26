@@ -1,0 +1,2 @@
+Tests the TEST_STRING macro with a representative sampling of actual-expect
+pairs. Also makes sure that failed test output go to stderr.

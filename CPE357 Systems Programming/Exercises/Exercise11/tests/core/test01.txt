@@ -1,0 +1,3 @@
+Tests the TEST_SIGNED macro with a representative sample of
+actual-expect pairs. Also makes sure it supports signed long values
+and that failed test output go to stderr.

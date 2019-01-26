@@ -1,0 +1,318 @@
+// Michael Silin
+// CS 2C Assignment #2
+/*******************************FHparseMat_h***********************************************************/
+#ifndef FHsparseMat_h
+#define FHsparseMat_h
+
+#include "FHlist.h"
+#include "FHvector.h"
+
+
+template <class Object>
+class MatNode
+{
+protected:
+   int col;
+public:
+   Object data;
+   // we need a default constructor for lists
+   MatNode(int cl = 0, Object dt = Object()) : col(cl), data(dt) {}
+   int getCol() const { return col; }
+
+   // not optimized yet for set() = defaultVal;  refer to forums
+/*   const Object & operator(const Object &x) { return (data = x); }*/
+};
+
+template <class Object>
+class SparseMat
+{
+protected:
+   typedef FHlist< MatNode<Object> > MatRow;
+   typedef FHvector<MatRow> MasterCol;
+   MasterCol rows;
+   Object defVal;
+   int rowSize, colSize;
+   class SizeErrorException {};
+
+public:
+   SparseMat(int r, int c, const Object &defaultVal) : defVal(defaultVal)
+   {
+      if ((r > 1) & (c > 1))
+      {
+         this->rowSize = r;
+         this->colSize = c;
+         for (int i = 0; i < colSize; i++)
+         {
+            rows.push_back(MatRow());
+         }
+      }
+   }
+
+
+   const Object & get(int r, int c)
+   {
+      if (this->checkSize(r, c))
+      {
+         throw SizeErrorException();
+      }
+      typename MatRow::const_iterator iter;
+      for (iter = rows[r - 1].begin(); iter != rows[r - 1].end(); iter++)
+      {
+         if ((*iter).getCol() == c)
+         {
+            return (*iter).data;
+         }
+      }
+      return defVal;
+   }
+
+   bool set(int r, int c, const Object &x)
+   {
+      if (this->checkSize(r, c))
+      {
+         return false;
+      }
+
+      typename MatRow::iterator iter;
+      for (iter = rows[r - 1].begin(); iter != rows[r - 1].end(); iter++)
+      {
+         if ((*iter).getCol() == c)
+         {
+            (*iter).data = x;
+            return true;
+         }
+      }
+      rows[r - 1].push_back(MatNode<Object>(c, x));
+      return true;
+   }
+
+   void clear()
+   {
+      typename MasterCol::iterator iter;
+      for (iter = rows.begin(); iter < rows.end(); iter++)
+      {
+         iter->clear();
+      }
+   }
+   void showSubSquare(int start, int size)
+   {
+      typename MatRow::const_iterator iter;
+      for (int i = start; i < start + size - 1; i++)
+      {
+         iter = rows[i].begin();
+
+         if (iter == rows[i].end())
+         {
+            for (int j = start; j < start + size; j++)
+            {
+               cout << " " << defVal << " ";
+               if (j == start + size - 1)
+               {
+                  cout << endl;
+               }
+            }
+         }
+         else
+         {
+            for (int j = start; j < start + size; j++)
+            {
+               for (iter = rows[i].begin(); iter != rows[i].end(); iter++)
+               {
+                  if (j == (*iter).getCol())
+                  {
+                     if ((*iter).data < 10)
+                     {
+                        cout << " " << (*iter).data << " ";
+                     }
+                     else
+                     {
+                        cout << (*iter).data << " ";
+                     }
+                     break;
+                  }
+                  else
+                  {
+                     cout << " " << defVal << " ";
+                  }
+               }
+               if (j == start + size - 1)
+               {
+                  cout << endl;
+               }
+            }
+         }
+      }
+      cout << endl;
+      cout << endl;
+   }
+
+   bool checkSize(int r, int c)
+   {
+      if (!((r >= 0) & (c >= 0) & (rowSize >= r) & (colSize >= c)))
+      {
+         return true;
+      }
+      return false;
+   }
+
+};
+
+
+#endif
+
+/*******************************End_FHparseMat_h***********************************************************/
+
+
+/******************************Main/Tests***********************************************************/
+#include <iostream>
+using namespace std;
+#include "FHsparseMat.h"
+
+#define MAT_SIZE 100000
+typedef SparseMat<float> SpMat;
+#include <iostream>
+
+// --------------- main ---------------
+int main()
+{
+   SpMat mat(MAT_SIZE, MAT_SIZE, 0); // 100000 x 100000 filled with 0
+
+                                     // test mutators
+   mat.set(2, 5, 10);
+   mat.set(2, 5, 35);   // should overwrite the 10
+   mat.set(3, 9, 21);
+   mat.set(MAT_SIZE, 1, 5);  // should fail silently
+   mat.set(9, 9, mat.get(3, 9));  // should copy the 21 here
+   mat.set(4, 4, -9);
+   mat.set(4, 4, 0);   // should remove the -9 node entirely
+   mat.set(MAT_SIZE - 1, MAT_SIZE - 1, 99);
+
+   // test accessors and exceptions
+   try
+   {
+      cout << mat.get(7, 8) << endl;
+      cout << mat.get(2, 5) << endl;
+      cout << mat.get(9, 9) << endl;
+      cout << mat.get(MAT_SIZE - 1, MAT_SIZE - 1) << endl;
+      cout << mat.get(7, 8) << endl;
+      cout << mat.get(-4, 7) << endl;  // should throw an exception
+      
+   }
+   catch (...)
+   {
+      cout << "oops" << endl;
+   }
+
+   cout << "show top left 15x15\n";
+   mat.showSubSquare(0, 15);
+
+   cout << "show bottom right 15: \n";
+   mat.showSubSquare(MAT_SIZE - 15, 15);
+
+   
+
+ 
+   cout << "show bottom right 15 after clearing: \n";
+   mat.clear();
+   mat.showSubSquare(MAT_SIZE - 15, 15);
+   cout << "show bottom right 20 after clearing and adding two numbers: \n";
+   mat.set( MAT_SIZE - 4, MAT_SIZE - 4, 77);
+   mat.set( MAT_SIZE - 1, MAT_SIZE - 1 , 65);
+   mat.showSubSquare(MAT_SIZE - 20, 20 );
+
+   
+}
+
+/******************************Main/Tests***********************************************************/
+
+
+
+
+
+/******************************Runs***********************************************************/
+
+
+
+0
+35
+21
+99
+0
+oops
+show top left 15x15
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0 35  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0 21  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0 21  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+
+
+show bottom right 15:
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0 99
+
+
+show bottom right 15 after clearing:
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+
+
+show bottom right 20 after clearing and adding two numbers:
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 77  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 65
+
+
+Press any key to continue . . .
+
+
+/******************************Runs***********************************************************/

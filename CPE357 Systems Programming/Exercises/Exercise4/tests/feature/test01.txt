@@ -1,0 +1,6 @@
+Tests the program with valid inputs and checks that the results to stdout
+match the provided solution's output EXACTLY, including whitespace, using
+diff.
+
+Note: Valid inputs are considered to be any positive numeric values. You are
+not expected to handle invalid inputs for this assignment.
