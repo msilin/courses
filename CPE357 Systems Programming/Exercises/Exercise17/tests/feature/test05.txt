@@ -1,4 +1,0 @@
-Test with an array with some number of elements between 2 and 999.
-
-Note: Valgrind is used to verify your solution has not memory leaks
-      or errors.

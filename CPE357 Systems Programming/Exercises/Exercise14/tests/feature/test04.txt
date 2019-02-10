@@ -1,1 +1,0 @@
-Without memory: Attempts to elements to the list using addTail only.

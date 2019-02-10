@@ -1,1 +1,0 @@
-Test the | operator followed by a variety << operations.

@@ -1,5 +1,0 @@
-Complexity Scores
-Score | ln-ct | nc-lns| file-name(line): proc-name
-   10      10      10   p2.c(4): approxEq
-   10      10      10   p2t.c(4): approxEq
-total nc-lns       20

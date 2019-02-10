@@ -1,1 +1,0 @@
-Read from a closed read-end of a pipe.

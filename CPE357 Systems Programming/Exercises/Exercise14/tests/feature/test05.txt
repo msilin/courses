@@ -1,3 +1,0 @@
-With memory: Adds elements to the list using addHead and addTail in a
-variety of orders. Prints out the empty list and the list after each
-addition. 

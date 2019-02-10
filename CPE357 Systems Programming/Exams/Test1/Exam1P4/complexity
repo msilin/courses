@@ -1,4 +1,0 @@
-Complexity Scores
-Score | ln-ct | nc-lns| file-name(line): proc-name
-  112      32      32   p4.c(4): findSubstring
-total nc-lns       32

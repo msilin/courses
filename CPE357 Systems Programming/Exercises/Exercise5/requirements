@@ -1,8 +1,0 @@
-reqAtMostGlobalVariables 0
-reqAtMostStaticFileVariables 0
-reqAtMostStaticLocalVariables 0
-reqNoUseOf "(^goto | goto )"
-reqNoDynamicMemory
-reqAtLeastHeaderFiles 2 
-reqAtLeastSourceFiles 3 
-reqAtLeastFunctions 8

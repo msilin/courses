@@ -1,9 +1,0 @@
-reqAtMostGlobalVariables 0
-reqAtMostStaticFileVariables 0
-reqAtMostStaticLocalVariables 0
-reqNoUseOf "(^goto | goto )"
-reqUseOf "[ "]memmon.h[" ]"
-reqAtLeastHeaderFiles 0
-reqAtMostHeaderFiles 1
-reqAtLeastSourceFiles 1
-reqAtMostSourceFiles 1

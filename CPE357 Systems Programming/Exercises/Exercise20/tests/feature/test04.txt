@@ -1,1 +1,0 @@
-Test parent with incorrect number of arguments.

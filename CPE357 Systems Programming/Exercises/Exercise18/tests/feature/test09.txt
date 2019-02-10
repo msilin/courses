@@ -1,1 +1,0 @@
-Write to a pipe with a closed read-end.

@@ -1,1 +1,0 @@
-Create a new pipe, write a value to it, and quit.

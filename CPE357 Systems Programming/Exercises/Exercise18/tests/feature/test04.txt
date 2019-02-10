@@ -1,1 +1,0 @@
-Create a new pipe, close the read, and quit.

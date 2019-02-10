@@ -1,2 +1,0 @@
-Test with some arbitrary input without files, i.e., reading from the
-original standard input and writing to the original standard output. 

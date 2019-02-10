@@ -1,7 +1,0 @@
-reqAtMostGlobalVariables 0
-reqAtMostStaticFileVariables 0
-reqAtMostStaticLocalVariables 0
-reqNoUseOf "(^goto | goto )"
-reqUseOf "(^fork|[(= ]fork) *[(]"
-reqUseOf "(^execlp|[(= ]execlp) *[(]"
-reqUseOf "(^waitpid|[(= ]waitpid) *[(]"

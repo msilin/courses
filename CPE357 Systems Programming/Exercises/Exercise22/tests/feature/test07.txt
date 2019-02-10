@@ -1,1 +1,0 @@
-Test ~ operator using patterns set up with a variety of & and | operations.

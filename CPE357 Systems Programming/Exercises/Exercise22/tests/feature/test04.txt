@@ -1,1 +1,0 @@
-Test the ^ operator with a variety of right-hand-side values.
