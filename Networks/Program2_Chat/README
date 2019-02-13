@@ -1,0 +1,1 @@
+allows a client to interact with a server by using the %M - message , %L for list clients,%B for broadcast, %E for exit commands
